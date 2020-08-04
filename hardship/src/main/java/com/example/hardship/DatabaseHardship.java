@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.stereotype.Component;
 
 @Component
-class DatabaseHardship {
+public class DatabaseHardship {
 
   private final DataSource dataSource;
   private final List<Connection> connections = new ArrayList<>();

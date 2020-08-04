@@ -19,4 +19,8 @@ VALUES (100, 'base ball'),
        (300, 'hockey puck'),
        (301, 'hockey stick'),
        (302, 'hockey skates'),
-       (303, 'hockey helmet');
+       (303, 'hockey helmet'),
+
+       (400, 'tennis ball'),
+       (401, 'tennis shoes')
+       ;
