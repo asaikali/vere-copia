@@ -22,5 +22,9 @@ VALUES (100, 'base ball'),
        (303, 'hockey helmet'),
 
        (400, 'tennis ball'),
-       (401, 'tennis shoes')
+       (401, 'tennis shoes'),
+
+       (500, 'golf ball'),
+       (501, 'golf shoes'),
+       (502, 'golf club')
        ;
