@@ -1,9 +1,12 @@
 server:
-  port: 8081
+  port: 8080
+
+central_inventory:
+  url: "http://localhost:8081"
 
 spring:
   datasource:
-    url: "jdbc:postgresql://127.0.0.1:25432/central_inventory"
+    url: "jdbc:postgresql://127.0.0.1:25432/store_inventory"
     username: postgres
     password: password
   jpa:
