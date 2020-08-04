@@ -5,7 +5,6 @@ import com.example.hardship.DatabaseHardship;
 import com.example.hardship.MemoryHardship;
 import com.example.hardship.ThreadHardship;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,15 +24,13 @@ class StoreStockApiController {
     this.databaseHardship = databaseHardship;
   }
 
-  @GetMapping("/stock")
-  Map<String,Object> lookupStockLevel(@RequestParam Integer sku, @RequestParam Integer quantity) {
-    this.generateHardship(sku);
-    var inStock = this.inventoryService.lookupStoreStockLevel(sku,quantity);
-    return Map.of("sku",sku,"quantity",inStock);
+  @GetMapping("/search")
+  List<ProductSearchResponse> storeProductSearch(@RequestParam String product) {
+    return this.inventoryService.lookupStoreStockLevel(product);
   }
 
   @GetMapping("/stores/stock")
-  List<ProductStockLevelResponse> lookupAllStoresStockLevel(@RequestParam Integer sku, @RequestParam Integer quantity) {
+  List<ProductStockLevelResponse> allStoresStockLevelLookup(@RequestParam Integer sku, @RequestParam Integer quantity) {
     this.generateHardship(sku);
     return this.inventoryService.lookupAllStoresStockLevel(sku,quantity);
   }
