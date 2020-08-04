@@ -1,6 +1,5 @@
-package com.example.inventory.api;
+package com.example.inventory;
 
-import com.example.inventory.model.StoreInventoryRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -8,17 +7,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-class InventoryService {
+class StoreStockService {
 
-  private final StoreInventoryRepository storeInventoryRepository;
+  private final StoreStockRepository storeStockRepository;
 
-  public InventoryService(StoreInventoryRepository storeInventoryRepository) {
-    this.storeInventoryRepository = storeInventoryRepository;
+  public StoreStockService(StoreStockRepository storeStockRepository) {
+    this.storeStockRepository = storeStockRepository;
   }
 
   @Transactional(propagation = Propagation.SUPPORTS)
-  public List<ProductStockLevelResponse> lookupStoreStockLevel(String sku, int quantity) {
-    return this.storeInventoryRepository.findByIdSku(sku).stream()
+  public List<ProductStockLevelResponse> lookupStockLevel(Integer sku, int quantity) {
+    return this.storeStockRepository.findByStoreProductSku(sku).stream()
         .filter(s -> s.getQuantity() >= quantity).map(s -> {
           var response = new ProductStockLevelResponse();
           response.setQuantity(s.getQuantity());

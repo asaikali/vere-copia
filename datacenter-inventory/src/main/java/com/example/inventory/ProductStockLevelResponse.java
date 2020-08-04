@@ -1,8 +1,8 @@
-package com.example.inventory.api;
+package com.example.inventory;
 
 class ProductStockLevelResponse {
   private int storeNumber;
-  private String sku;
+  private int sku;
   private int quantity;
 
   public int getStoreNumber() {
@@ -13,11 +13,11 @@ class ProductStockLevelResponse {
     this.storeNumber = storeNumber;
   }
 
-  public String getSku() {
+  public int getSku() {
     return sku;
   }
 
-  public void setSku(String sku) {
+  public void setSku(int sku) {
     this.sku = sku;
   }
 

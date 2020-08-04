@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="store_inventory")
-public class StoreInventory extends VersionedObject {
+@Table(name="store_stock")
+public class StoreStock extends VersionedObject {
 
   @EmbeddedId
   private StoreProduct  storeProduct;

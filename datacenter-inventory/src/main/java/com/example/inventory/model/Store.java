@@ -1,20 +1,31 @@
 package com.example.inventory.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="stores")
+@Table(name = "stores")
 public class Store extends VersionedObject {
 
   @Id
+  @Column(name = "num")
   private String num;
 
+  @Column(name = "name")
   private String name;
+
+  @Column(name = "street")
   private String street;
+
+  @Column(name = "city")
   private String city;
+
+  @Column(name = "postal_code")
   private String postalCode;
+
+  @Column(name = "province")
   private String province;
 
   public String getNum() {

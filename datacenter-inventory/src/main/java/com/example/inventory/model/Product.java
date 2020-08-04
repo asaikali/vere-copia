@@ -11,16 +11,16 @@ public class Product extends VersionedObject{
 
   @Id
   @Column(name = "sku")
-  private String sku;
+  private Integer sku;
 
-  @Column(name = "desc")
+  @Column(name = "description")
   private String description;
 
-  public String getSku() {
+  public Integer getSku() {
     return sku;
   }
 
-  public void setSku(String sku) {
+  public void setSku(Integer sku) {
     this.sku = sku;
   }
 

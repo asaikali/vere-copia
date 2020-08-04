@@ -1,4 +1,4 @@
-package com.example.inventory.api;
+package com.example.inventory;
 
 class ProductStockLevelRequest {
   private String sku;

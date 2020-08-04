@@ -11,7 +11,7 @@ public class StoreProduct implements Serializable {
   private int storeNumber;
 
   @Column(name="sku")
-  private String sku;
+  private Integer sku;
 
   public int getStoreNumber() {
     return storeNumber;
@@ -21,11 +21,11 @@ public class StoreProduct implements Serializable {
     this.storeNumber = storeNumber;
   }
 
-  public String getSku() {
+  public Integer getSku() {
     return sku;
   }
 
-  public void setSku(String sku) {
+  public void setSku(Integer sku) {
     this.sku = sku;
   }
 
