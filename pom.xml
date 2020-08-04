@@ -17,11 +17,13 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<wavefront.version>2.0.0-SNAPSHOT</wavefront.version>
+		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 	</properties>
 
 	<modules>
 		<module>hardship</module>
-		<module>datacenter-inventory</module>
+		<module>central-inventory</module>
 		<module>store-inventory</module>
 		<module>store-kiosk</module>
 	</modules>
@@ -39,4 +41,35 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.wavefront</groupId>
+				<artifactId>wavefront-spring-boot-bom</artifactId>
+				<version>${wavefront.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+	</repositories>
 </project>

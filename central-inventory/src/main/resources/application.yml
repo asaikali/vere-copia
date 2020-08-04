@@ -1,7 +1,10 @@
+
 server:
   port: 8081
 
 spring:
+  application:
+    name: "central-inventory"
   datasource:
     url: "jdbc:postgresql://127.0.0.1:25432/central_inventory"
     username: postgres
@@ -10,6 +13,11 @@ spring:
     open-in-view: false
 
 management:
+  metrics:
+    export:
+      wavefront:
+        api-token: "1be44ad0-ac4b-45fe-8f1e-a736e02273be"
+        uri: "https://wavefront.surf"
   endpoints:
     web:
       exposure:
