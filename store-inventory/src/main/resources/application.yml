@@ -2,7 +2,7 @@ server:
   port: 8080
 
 central_inventory:
-  url: "http://localhost:8081"
+  url: "http://localhost:8082"
 
 spring:
   application:
