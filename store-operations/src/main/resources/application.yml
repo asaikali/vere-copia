@@ -6,9 +6,9 @@ central_inventory:
 
 spring:
   application:
-    name: "store-inventory"
+    name: "store-operations"
   datasource:
-    url: "jdbc:postgresql://127.0.0.1:25432/store_inventory"
+    url: "jdbc:postgresql://127.0.0.1:25432/store_operations"
     username: postgres
     password: password
   jpa:

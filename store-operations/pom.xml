@@ -9,10 +9,20 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.example</groupId>
-  <artifactId>store-inventory</artifactId>
+  <artifactId>store-operations</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <dependencies>
+    <dependency>
+      <groupId>com.example</groupId>
+      <artifactId>store-kiosk</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.example</groupId>
+      <artifactId>hardship</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.wavefront</groupId>
       <artifactId>wavefront-spring-boot-starter</artifactId>
@@ -20,11 +30,6 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.example</groupId>
-      <artifactId>hardship</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.flywaydb</groupId>

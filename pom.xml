@@ -24,7 +24,7 @@
 	<modules>
 		<module>hardship</module>
 		<module>central-inventory</module>
-		<module>store-inventory</module>
+		<module>store-operations</module>
 		<module>store-kiosk</module>
 	</modules>
 

@@ -7,7 +7,7 @@ CREATE DATABASE central_inventory
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 
-CREATE DATABASE store_inventory
+CREATE DATABASE store_operations
     WITH
     OWNER = postgres
     ENCODING = 'UTF8'
