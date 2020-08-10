@@ -2,7 +2,7 @@ server:
   port: 8080
 
 central_inventory:
-  url: "http://localhost:8081"
+  url: "http://localhost:8082"
 
 spring:
   application:
@@ -18,8 +18,8 @@ management:
   metrics:
     export:
       wavefront:
-        api-token: "1be44ad0-ac4b-45fe-8f1e-a736e02273be"
-        uri: "https://wavefront.surf"
+        api-token: "854c5ef7-fc6a-463b-9706-3ff464abd298"
+        uri: "https://try.wavefront.com"
   endpoints:
     web:
       exposure:
