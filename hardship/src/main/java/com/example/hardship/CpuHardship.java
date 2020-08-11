@@ -12,7 +12,7 @@ public class CpuHardship {
   private final Random random = new Random();
 
   public BigInteger fibonacci()  {
-    return this.fibonacci(random.nextInt(1000) * 10_000);
+    return this.fibonacci(random.nextInt(1000) * 1000);
   }
 
   public BigInteger fibonacci(int n)  {
