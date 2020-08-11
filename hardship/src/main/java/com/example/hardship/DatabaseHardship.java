@@ -25,11 +25,10 @@ public class DatabaseHardship {
         throwables.printStackTrace();
       }
     });
-
     this.connections.clear();
   }
 
-  synchronized public void leakConnection(){
+  synchronized public void leakConnection() {
     try {
       var connection = this.dataSource.getConnection();
       if(connections.contains(connection)) {

@@ -6,9 +6,14 @@ import com.example.hardship.MemoryHardship;
 import com.example.hardship.ThreadHardship;
 import java.util.List;
 import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 @RestController
 class StoreStockApiController {
@@ -18,21 +23,51 @@ class StoreStockApiController {
   private final ThreadHardship threadHardship = new ThreadHardship();
   private final DatabaseHardship databaseHardship;
   private final Random experienceHardship = new Random();
+  private final MeterRegistry registry;
 
-  public StoreStockApiController(StoreStockService inventoryService,DatabaseHardship databaseHardship) {
+  public StoreStockApiController(StoreStockService inventoryService,DatabaseHardship databaseHardship, MeterRegistry registry) {
     this.inventoryService = inventoryService;
     this.databaseHardship = databaseHardship;
+    this.registry = registry;
   }
 
   @GetMapping("/search")
   List<ProductSearchResponse> storeProductSearch(@RequestParam String product) {
-    return this.inventoryService.lookupStoreStockLevel(product);
+
+    List<ProductSearchResponse> response = this.inventoryService.lookupStoreStockLevel(product);
+    // if the response is empty, we are going to
+    // be logging that for business to analyze
+    if(registry != null) {
+      if (response.size() == 0) {
+        // what was the product string?
+        Counter counter = registry.counter("product.search.none", "product", product);
+        counter.increment();
+      } else {
+        Counter counter = registry.counter("product.search.found", "product", product);
+        counter.increment();
+      }
+    }
+    return response;
   }
 
   @GetMapping("/stores/stock")
   List<ProductStockLevelResponse> allStoresStockLevelLookup(@RequestParam Integer sku, @RequestParam Integer quantity) {
     this.generateHardship(sku);
-    return this.inventoryService.lookupAllStoresStockLevel(sku,quantity);
+    List<ProductStockLevelResponse> response = this.inventoryService.lookupAllStoresStockLevel(sku,quantity);
+    // if the response is empty, we are going to
+    // be logging that for business to analyze
+    if(registry != null) {
+      if(response.size() == 0) {
+        // what were the sku and quantity?
+        // what was the product string?
+        Counter counter = registry.counter("stock.lookup.none", "sku", sku.toString(), "quantity", quantity.toString());
+        counter.increment();
+      } else {
+        Counter counter = registry.counter("stock.lookup.found", "sku", sku.toString(), "quantity", quantity.toString());
+        counter.increment();
+      }
+    }
+    return response;
   }
 
   private void generateHardship(int sku) {

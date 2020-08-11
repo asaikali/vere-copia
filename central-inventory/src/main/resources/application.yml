@@ -25,3 +25,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+# wavefront
+wavefront:
+  application:
+    name: vere-copia

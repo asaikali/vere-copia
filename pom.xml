@@ -29,6 +29,19 @@
 	</modules>
 
 	<dependencies>
+
+		<!-- add these to enable Wavefront trace and monitoring -->
+		<dependency>
+			<groupId>com.wavefront</groupId>
+			<artifactId>wavefront-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.opentracing.contrib</groupId>
+			<artifactId>opentracing-spring-cloud-starter</artifactId>
+			<version>LATEST</version>
+		</dependency>
+		<!-- wavefront trace and monitoring end -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
