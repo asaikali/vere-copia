@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+
+<mat-toolbar color="primary">
+  <span class="fill-remaining-space">Product Inventory Search</span>
+</mat-toolbar>
+
+<form [formGroup]="searchForm"  (ngSubmit)="search()">
+  <mat-form-field>
+    <mat-label>Product</mat-label>
+    <input matInput type="text" formControlName="product"  />
+  </mat-form-field>
+  <button mat-button color="primary">search</button>
+</form>
