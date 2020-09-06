@@ -31,7 +31,7 @@ class StoreStockApiController {
     this.registry = registry;
   }
 
-  @GetMapping("/search")
+  @GetMapping("/api/search")
   List<ProductSearchResponse> storeProductSearch(@RequestParam String product) {
 
     List<ProductSearchResponse> response = this.inventoryService.lookupStoreStockLevel(product);
@@ -50,7 +50,7 @@ class StoreStockApiController {
     return response;
   }
 
-  @GetMapping("/stores/stock")
+  @GetMapping("/api/stores/stock")
   List<ProductStockLevelResponse> allStoresStockLevelLookup(@RequestParam Integer sku, @RequestParam Integer quantity) {
     this.generateHardship(sku);
     List<ProductStockLevelResponse> response = this.inventoryService.lookupAllStoresStockLevel(sku,quantity);

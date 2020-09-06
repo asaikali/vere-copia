@@ -7,7 +7,7 @@ do
   s_id=$(( RANDOM % ${#skus[@]} ))
   sku=${skus[s_id]}
 	quantity=$((1 + RANDOM % 10))
-	curl_cmd="curl -X GET 'http://localhost:8080/stores/stock?sku=${sku}&quantity=${quantity}'"
+	curl_cmd="curl -X GET 'http://localhost:8080/api/stores/stock?sku=${sku}&quantity=${quantity}'"
 	echo "$curl_cmd"
 	eval "$curl_cmd"
 	sleep "$1"

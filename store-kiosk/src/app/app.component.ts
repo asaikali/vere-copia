@@ -14,9 +14,8 @@ export class AppComponent {
     product :  new FormControl('')
   });
 
-
+  displayedColumns: string[] = ['sku', 'description', 'quantity'];
   searchResults:  ProductSearchResponseModel[];
-
 
   search() : void {
     console.log(this.searchForm.value.product.value);
