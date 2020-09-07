@@ -14,7 +14,7 @@ export class SkuInventoryDetailComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   stockLevel:  ProductStockLevelResponse[];
-  displayedColumns: string[] = ['sku', 'storeNumber', 'quantity'];
+  displayedColumns: string[] = ['storeNumber','storeName','storeAddress', 'sku','product','quantity'];
 
   ngOnInit(): void {
     this.searchProducts();

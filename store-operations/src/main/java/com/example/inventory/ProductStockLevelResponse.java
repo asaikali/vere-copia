@@ -2,8 +2,35 @@ package com.example.inventory;
 
 class ProductStockLevelResponse {
   private int storeNumber;
+  private String storeName;
+  private String storeAddress;
+  private String product;
   private int sku;
   private int quantity;
+
+  public String getProduct() {
+    return product;
+  }
+
+  public void setProduct(String product) {
+    this.product = product;
+  }
+
+  public String getStoreName() {
+    return storeName;
+  }
+
+  public void setStoreName(String storeName) {
+    this.storeName = storeName;
+  }
+
+  public String getStoreAddress() {
+    return storeAddress;
+  }
+
+  public void setStoreAddress(String storeAddress) {
+    this.storeAddress = storeAddress;
+  }
 
   public int getStoreNumber() {
     return storeNumber;

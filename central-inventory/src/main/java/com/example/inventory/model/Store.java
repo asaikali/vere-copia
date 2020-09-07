@@ -11,7 +11,7 @@ public class Store extends VersionedObject {
 
   @Id
   @Column(name = "num")
-  private String num;
+  private Integer num;
 
   @Column(name = "name")
   private String name;
@@ -28,11 +28,11 @@ public class Store extends VersionedObject {
   @Column(name = "province")
   private String province;
 
-  public String getNum() {
+  public Integer getNum() {
     return num;
   }
 
-  public void setNum(String num) {
+  public void setNum(Integer num) {
     this.num = num;
   }
 
