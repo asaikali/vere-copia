@@ -10,20 +10,32 @@
 <table mat-table [dataSource]="searchResults" class="mat-elevation-z8" width="100%" *ngIf="searchResults">
   <!-- sku Column -->
   <ng-container matColumnDef="sku">
-    <th mat-header-cell *matHeaderCellDef> sku </th>
+    <th mat-header-cell *matHeaderCellDef> SKU </th>
     <td mat-cell *matCellDef="let element"> {{element.sku}} </td>
   </ng-container>
 
   <!-- Description Column -->
   <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef> description </th>
+    <th mat-header-cell *matHeaderCellDef> Description </th>
     <td mat-cell *matCellDef="let element"> {{element.description}} </td>
   </ng-container>
 
   <!-- quantity Column -->
   <ng-container matColumnDef="quantity">
-    <th mat-header-cell *matHeaderCellDef> quantity </th>
+    <th mat-header-cell *matHeaderCellDef> Quantity </th>
     <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+  </ng-container>
+
+  <!-- quantity Column -->
+  <ng-container matColumnDef="probability">
+    <th mat-header-cell *matHeaderCellDef> Probability </th>
+    <td mat-cell *matCellDef="let element"> {{expectedHardShipProbability()}} </td>
+  </ng-container>
+
+  <!-- hardship Column -->
+  <ng-container matColumnDef="hardship">
+    <th mat-header-cell *matHeaderCellDef> Hardship </th>
+    <td mat-cell *matCellDef="let element"> {{expectedHardShip(element.sku)}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

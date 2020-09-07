@@ -13,7 +13,7 @@ export class SearchComponent implements OnInit {
     product :  new FormControl('')
   });
 
-  displayedColumns: string[] = ['sku', 'description', 'quantity'];
+  displayedColumns: string[] = ['sku', 'description', 'quantity', 'hardship','probability'];
   searchResults:  ProductSearchResponseModel[];
 
   constructor(private inventoryService: InventoryService) {
@@ -25,6 +25,30 @@ export class SearchComponent implements OnInit {
       (matchingProducts : ProductSearchResponseModel[]) => {
         this.searchResults = matchingProducts;
       });
+  }
+
+  public expectedHardShipProbability() : string {
+    return "25%";
+  }
+
+  public expectedHardShip(sku:number) : string {
+    if(sku >= 100 && sku < 200) {
+      return "CPU";
+    }
+
+    if(sku >= 200 && sku < 300) {
+      return "Leaked Database Connection";
+    }
+
+    if(sku >= 300  && sku < 400){
+      return "Thread Chaos";
+    }
+
+    if(sku >= 400 &&  sku < 500) {
+      return  "Leak Memory";
+    }
+
+    return "None";
   }
 
   ngOnInit(): void {
