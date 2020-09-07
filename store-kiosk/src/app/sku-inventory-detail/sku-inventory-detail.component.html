@@ -1,1 +1,25 @@
-<p>sku-inventory-detail works!</p>
+<p>Stores with inventory</p>
+
+
+<table mat-table [dataSource]="stockLevel" class="mat-elevation-z8" width="100%">
+  <!-- sku Column -->
+  <ng-container matColumnDef="sku">
+    <th mat-header-cell *matHeaderCellDef> sku </th>
+    <td mat-cell *matCellDef="let element"> {{element.sku}} </td>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="storeNumber">
+    <th mat-header-cell *matHeaderCellDef> storeNumber </th>
+    <td mat-cell *matCellDef="let element"> {{element.storeNumber}} </td>
+  </ng-container>
+
+  <!-- quantity Column -->
+  <ng-container matColumnDef="quantity">
+    <th mat-header-cell *matHeaderCellDef> quantity </th>
+    <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
