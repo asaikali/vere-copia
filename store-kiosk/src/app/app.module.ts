@@ -7,9 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MaterialModule} from "./material/material.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import { SkuInventoryDetailComponent } from './sku-inventory-detail/sku-inventory-detail.component';
+import { SearchComponent } from './search/search.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SkuInventoryDetailComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
