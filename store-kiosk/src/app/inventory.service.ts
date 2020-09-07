@@ -11,7 +11,7 @@ export class InventoryService {
 
   constructor(private httpClient: HttpClient){}
 
-  search(product : string) :Observable<ProductSearchResponseModel[]> {
+  searchStoreStock(product : string) :Observable<ProductSearchResponseModel[]> {
     return this.httpClient
               .get<ProductSearchResponseModel[]>(`/api/search?product=${product}`)
               .pipe(
