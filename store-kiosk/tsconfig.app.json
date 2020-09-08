@@ -3,7 +3,21 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "http": [
+        "node_modules/empty/index.js"
+      ],
+      "https": [
+        "node_modules/empty/index.js"
+      ],
+      "os": [
+        "node_modules/empty/index.js"
+      ],
+      "node-fetch": [
+        "node_modules/empty/index.js"
+      ]
+    }
   },
   "files": [
     "src/main.ts",

@@ -24,6 +24,8 @@
     "component": "^1.1.0",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",
+    "zipkin": "^0.22.0",
+    "zipkin-transport-http": "^0.22.0",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
