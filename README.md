@@ -9,6 +9,11 @@ following.
 *  Leak a database connection 
 *  compute a random fibonaci number between 1000 and 1,000,000 
 
+Setup Wavefront
+* Go to Browse --> Proxies in the wavefront UI  
+* add a proxy and not the token value 
+* add a file called `wavefront-token.env` with a property `WAVEFRONT_TOKEN=token value from wavefront ui`
+
 Steps to run the application: 
 * run `docker-compose up` to setup the postgres database that the app uses
 * run the central-inventory application

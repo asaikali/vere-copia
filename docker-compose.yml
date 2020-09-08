@@ -5,6 +5,19 @@ volumes:
   pgadmin:
 
 services:
+  wavefrontProxy:
+    container_name: verecopia_wavefront_proxy
+    image: wavefronthq/proxy:latest
+    env_file:
+      - wavefront-token.env
+    environment:
+      WAVEFRONT_TOKEN: ${WAVEFRONT_TOKEN}"
+      WAVEFRONT_URL:  "https://longboard.wavefront.com/api/"
+      WAVEFRONT_PROXY_ARGS: "--traceZipkinListenerPorts 9411"
+      JAVA_HEAP_USAGE: "512m"
+    ports:
+    - "2878:2878"
+    - "9411:9411"
   postgres:
     container_name: verecopia_postgres
     image: "postgres:12"
@@ -18,7 +31,6 @@ services:
     ports:
       - "25432:5432"
     restart: unless-stopped
-
   pgadmin:
     container_name: verecopia_pgadmin
     image: "dpage/pgadmin4:4.24"
