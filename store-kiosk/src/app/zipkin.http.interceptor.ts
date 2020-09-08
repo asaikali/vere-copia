@@ -19,7 +19,7 @@ export class ZipkinHttpInterceptor implements HttpInterceptor {
             ctxImpl: new zipkin.ExplicitContext(),
             recorder: new zipkin.BatchRecorder({
                 logger: new zipkinTransportHttp.HttpLogger({
-                    endpoint: 'http://localhost:9411/api/v2/spans',
+                    endpoint: 'wavefront/api/v2/spans',
                     jsonEncoder: zipkin.jsonEncoder.JSON_V2
                 })
             }),

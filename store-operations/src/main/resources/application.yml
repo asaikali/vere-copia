@@ -18,8 +18,7 @@ management:
   metrics:
     export:
       wavefront:
-        api-token: "854c5ef7-fc6a-463b-9706-3ff464abd298"
-        uri: "https://try.wavefront.com"
+        uri: proxy://localhost:2878
   endpoints:
     web:
       exposure:
@@ -32,3 +31,5 @@ management:
 wavefront:
   application:
     name: vere-copia
+    service: store-opertions
+  freemium-account: false
