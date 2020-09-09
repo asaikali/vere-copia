@@ -24,7 +24,8 @@ export class ZipkinHttpInterceptor implements HttpInterceptor {
                 })
             }),
             localServiceName: localServiceName,
-            traceId128Bit: true
+            traceId128Bit: true,
+            defaultTags: { application: 'vere-copia', service: 'store-kiosk' },
         });
         this.instrumentation = new zipkin.Instrumentation.HttpClient(
             { tracer: this.tracer, serviceName: localServiceName, remoteServiceName: remoteServiceName }
