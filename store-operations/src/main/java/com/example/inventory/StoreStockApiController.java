@@ -37,7 +37,7 @@ class StoreStockApiController {
     List<ProductSearchResponse> response = this.inventoryService.lookupStoreStockLevel(product);
     // if the response is empty, we are going to
     // be logging that for business to analyze
-    if(registry != null) {
+    if(registry != null && product != null) {
       if (response.size() == 0) {
         // what was the product string?
         Counter counter = registry.counter("product.search.none", "product", product);

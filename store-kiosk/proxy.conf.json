@@ -9,7 +9,6 @@
     "target": "http://localhost:9411/api/v2/spans",
     "pathRewrite": {"^/wavefront" : ""},
     "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
+    "logLevel": "debug"
   }
 }
