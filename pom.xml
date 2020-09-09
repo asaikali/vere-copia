@@ -18,7 +18,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<wavefront.version>2.0.1</wavefront.version>
-		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 	</properties>
 
 	<modules>
@@ -38,9 +38,8 @@
 			<version>${wavefront.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.opentracing.contrib</groupId>
-			<artifactId>opentracing-spring-cloud-starter</artifactId>
-			<version>LATEST</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
 		<!-- wavefront trace and monitoring end -->
 
