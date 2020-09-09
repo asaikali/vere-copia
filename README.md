@@ -9,6 +9,11 @@ following.
 *  Leak a database connection 
 *  compute a random fibonaci number between 1000 and 1,000,000 
 
+## Zipkin and OpenTracing Support
+
+The main  branch uses spring cloud sleuth based on zipkin for instrumenting  the spring application
+for distributed tracing. The branch `opentracing` uses the opentracing java api instead of zipkin. 
+
 ## Setup Wavefront
 * Go to Browse --> Proxies in the wavefront UI  
 * add a proxy and not the token value 
