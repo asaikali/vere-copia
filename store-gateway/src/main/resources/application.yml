@@ -1,0 +1,27 @@
+server:
+  port: 7777
+
+app:
+  angular: "http://localhost:4200"
+  api: "http://localhost:8080"
+  wavefront: "http://localhost:9411"
+
+management:
+  metrics:
+    export:
+      wavefront:
+        uri: proxy://localhost:2878
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      
+# wavefront
+wavefront:
+  application:
+    name: vere-copia
+    service: store-gateway
+  freemium-account: false

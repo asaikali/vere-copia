@@ -26,6 +26,7 @@
 		<module>central-inventory</module>
 		<module>store-operations</module>
 		<module>store-kiosk</module>
+		<module>store-gateway</module>
 	</modules>
 
 	<dependencies>

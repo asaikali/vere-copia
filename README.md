@@ -9,12 +9,12 @@ following.
 *  Leak a database connection 
 *  compute a random fibonaci number between 1000 and 1,000,000 
 
-Setup Wavefront
+## Setup Wavefront
 * Go to Browse --> Proxies in the wavefront UI  
 * add a proxy and not the token value 
 * add a file called `wavefront-token.env` with a property `WAVEFRONT_TOKEN=token value from wavefront ui`
 
-Steps to run the application: 
+## Steps to run the application: 
 * run `docker-compose up` to setup the postgres database that the app uses
 * run the central-inventory application
 * run the store-inventory application 
@@ -30,6 +30,13 @@ Steps to run the application:
 Inspect the store inventory `StoreStockApiController` to learn how to send it requests, it will
 in turn call the central-inventory service. Both central-inventory and store-inventory send data
 to wavefront.
+
+## Run the store gateway (Optional)
+
+An api gateway based on spring cloud gateway  is available in the `store-gateway` project. It will
+proxy traffic to the angular app running with `ng serve`, the store-operations microservice and 
+wavefront proxy. it runs on port 7777 visit `localhost:7777` to access the application via the
+gateway. 
 
 
 
