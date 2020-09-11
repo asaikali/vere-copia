@@ -20,6 +20,10 @@ for distributed tracing. The branch `opentracing` uses the opentracing java api 
 * add a file called `wavefront-token.env` with a property `WAVEFRONT_TOKEN=token value from wavefront ui`
 
 ## Steps to run the application: 
+
+* run `./mvnw clean package` to build the application and generate `git.propertis` file in the 
+ `central-inventory` application, if the `git.properties` is not generated the application 
+ will not startup. 
 * run `docker-compose up` to setup the postgres database that the app uses
 * run the central-inventory application
 * run the store-inventory application 
@@ -30,7 +34,7 @@ for distributed tracing. The branch `opentracing` uses the opentracing java api 
     npm run build
     npm start
     ```
-  - http://localhost:4200 to access the kiosk
+*  go to http://localhost:4200 to access the kiosk
 
 Inspect the store inventory `StoreStockApiController` to learn how to send it requests, it will
 in turn call the central-inventory service. Both central-inventory and store-inventory send data
