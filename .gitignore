@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-wavefront-token.env
+laptop/.env
 
 ### STS ###
 .apt_generated
