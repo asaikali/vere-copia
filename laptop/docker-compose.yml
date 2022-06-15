@@ -12,7 +12,7 @@ services:
       - ".env"
     environment:
       WAVEFRONT_TOKEN: ${WAVEFRONT_TOKEN}
-      WAVEFRONT_URL:  "https://demo.wavefront.com/api"
+      WAVEFRONT_URL:  "https://longboard.wavefront.com/api/"
       WAVEFRONT_PROXY_ARGS: "--traceZipkinListenerPorts 9411"
       JAVA_HEAP_USAGE: "512m"
     ports:
