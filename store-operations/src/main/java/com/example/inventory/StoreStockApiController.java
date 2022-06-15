@@ -7,7 +7,8 @@ import com.example.hardship.ThreadHardship;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.cloud.sleuth.annotation.SpanTag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,14 +26,19 @@ class StoreStockApiController {
   private final Random experienceHardship = new Random();
   private final MeterRegistry registry;
 
-  public StoreStockApiController(StoreStockService inventoryService,DatabaseHardship databaseHardship, MeterRegistry registry) {
+  private final Tracer tracer;
+
+  public StoreStockApiController(StoreStockService inventoryService,DatabaseHardship databaseHardship, MeterRegistry registry, Tracer tracer) {
     this.inventoryService = inventoryService;
     this.databaseHardship = databaseHardship;
     this.registry = registry;
+    this.tracer = tracer;
   }
 
   @GetMapping("/api/search")
-  List<ProductSearchResponse> storeProductSearch(@RequestParam String product) {
+  List<ProductSearchResponse> storeProductSearch(@RequestParam @SpanTag  String product) {
+
+    tracer.currentSpan().tag("foo", product);
 
     List<ProductSearchResponse> response = this.inventoryService.lookupStoreStockLevel(product);
     // if the response is empty, we are going to
