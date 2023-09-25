@@ -11,20 +11,21 @@ following.
 
 ## Zipkin and OpenTracing Support
 
-The main  branch uses spring cloud sleuth based on zipkin for instrumenting  the spring application
+The main branch uses micrometer and zipkin for instrumenting the spring application
 for distributed tracing. The branch `opentracing` uses the opentracing java api instead of zipkin. 
 
 ## Setup Wavefront
 * Go to Browse --> Proxies in the wavefront UI  
 * add a proxy and not the token value 
-* add a file called `wavefront-token.env` with a property `WAVEFRONT_TOKEN=token value from wavefront ui`
+* add a file called `.env` in the `laptop` diretory with a property `WAVEFRONT_TOKEN=token value from wavefront ui`
+* If necessary, update the docker-compose.yaml file to point to the freemium version of the wavefront API (if you have a freemium API token).
 
 ## Steps to run the application: 
 
 * run `./mvnw clean package` to build the application and generate `git.propertis` file in the 
  `central-inventory` application, if the `git.properties` is not generated the application 
  will not startup. 
-* run `docker-compose up` to setup the postgres database that the app uses
+* run `docker-compose up` from the `laptop` directory to setup the postgres database and wavefront proxy that the app services use
 * run the central-inventory application
 * run the store-inventory application 
 * run the store-kiosk

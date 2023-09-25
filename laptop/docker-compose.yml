@@ -12,7 +12,9 @@ services:
       - ".env"
     environment:
       WAVEFRONT_TOKEN: ${WAVEFRONT_TOKEN}
-      WAVEFRONT_URL:  "https://longboard.wavefront.com/api/"
+      # WAVEFRONT_URL:  "https://longboard.wavefront.com/api/"
+      # Uncomment the line below and comment out the line above to use the Freemium server
+      WAVEFRONT_URL:  "https://wavefront.surf/api/"
       WAVEFRONT_PROXY_ARGS: "--traceZipkinListenerPorts 9411"
       JAVA_HEAP_USAGE: "512m"
     ports:

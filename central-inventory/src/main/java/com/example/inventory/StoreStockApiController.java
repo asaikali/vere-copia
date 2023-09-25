@@ -43,6 +43,7 @@ class StoreStockApiController {
       this.databaseHardship.leakConnection();
     }
 
+
     if(sku >= 300  && sku < 400){
       this.threadHardship.chaos();
     }
@@ -50,5 +51,6 @@ class StoreStockApiController {
     if(sku >= 400 &&  sku < 500) {
       this.memoryHardship.leakRandomMegaBytes();
     }
+
   }
 }

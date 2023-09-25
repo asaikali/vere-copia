@@ -58,6 +58,16 @@
       <scope>runtime</scope>
       <optional>true</optional>
     </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.testcontainers</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <scope>test</scope>
+		</dependency>	      
   </dependencies>
   <build>
     <plugins>
@@ -66,10 +76,10 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>pl.project13.maven</groupId>
-        <artifactId>git-commit-id-plugin</artifactId>
-        <version>4.0.0</version>
+        <groupId>io.github.git-commit-id</groupId>
+        <artifactId>git-commit-id-maven-plugin</artifactId>
         <configuration>
+          <version>5.0.0</version>
           <verbose>false</verbose>
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
         </configuration>

@@ -13,10 +13,11 @@ spring:
     open-in-view: false
 
 management:
-  metrics:
-    export:
-      wavefront:
-        uri: "proxy://localhost:2878"
+  wavefront:
+    uri: proxy://localhost:2878
+    application:
+      name: vere-copia
+      service-name: central-inventory
   endpoints:
     web:
       exposure:
@@ -26,10 +27,3 @@ management:
       show-details: always
       probes:
         enabled: true
-
-# wavefront
-wavefront:
-  application:
-    name: vere-copia
-    service: central-inventory
-  freemium-account: false

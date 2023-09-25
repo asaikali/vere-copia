@@ -7,8 +7,8 @@ import com.example.hardship.ThreadHardship;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.cloud.sleuth.annotation.SpanTag;
+import io.micrometer.tracing.Tracer;
+import io.micrometer.tracing.annotation.SpanTag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -96,5 +96,6 @@ class StoreStockApiController {
     if(sku >= 400 &&  sku < 500) {
       this.memoryHardship.leakRandomMegaBytes();
     }
+
   }
 }

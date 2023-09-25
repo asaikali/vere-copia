@@ -7,10 +7,11 @@ app:
   wavefront: "http://localhost:9411"
 
 management:
-  metrics:
-    export:
-      wavefront:
-        uri: proxy://localhost:2878
+  wavefront:
+    uri: proxy://localhost:2878
+    application:
+      name: vere-copia
+      service-name: store-gateway 
   endpoints:
     web:
       exposure:
@@ -20,10 +21,4 @@ management:
       show-details: always
       probes:
         enabled: true
-      
-# wavefront
-wavefront:
-  application:
-    name: vere-copia
-    service: store-gateway
-  freemium-account: false
+
