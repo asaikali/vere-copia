@@ -1,0 +1,195 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  labels:
+    provider: "cloudnative-pg"
+  name: xcloudnativepgs.bindable.db.example.org
+spec:
+  compositeTypeRef:
+    apiVersion: bindable.db.example.org/v1alpha1  
+    kind: XCloudNativePG
+  publishConnectionDetailsWithStoreConfigRef:
+    name: default
+  resources:
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: v1
+            kind: Namespace
+        providerConfigRef:
+          name: bitnami-services-provider-kubernetes            
+    patches:
+    - fromFieldPath: metadata.name
+      toFieldPath: spec.forProvider.manifest.metadata.name
+      type: FromCompositeFieldPath
+  - base:
+      name: cloud-native-pg-cluster
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: postgresql.cnpg.io/v1
+            kind: Cluster
+            metadata:
+                namespace: ""
+            spec:
+              instances: 3
+              primaryUpdateStrategy: unsupervised
+              storage:
+                size: 1Gi
+              imageName: ghcr.io/cloudnative-pg/postgresql:13.6
+        writeConnectionSecretToRef:
+          namespace: crossplane-system    
+        connectionDetails:
+        - apiVersion: v1
+          fieldPath: spec.clusterIP
+          kind: Service
+          namespace: ""
+          toConnectionSecretKey: host
+        - apiVersion: v1
+          fieldPath: data.password
+          kind: Secret
+          namespace: ""
+          toConnectionSecretKey: password   
+    connectionDetails:
+    - name: type
+      value: postgresql
+    - name: provider
+      value: cloud-native-pg  
+    - name: port
+      value: "5432"   
+    - name: database
+      value: app    
+    - name: username
+      value: postgres                
+    - fromConnectionSecretKey: host
+    - fromConnectionSecretKey: password                              
+    patches:  
+    - fromFieldPath: metadata.name
+      toFieldPath: spec.forProvider.manifest.metadata.namespace
+      type: FromCompositeFieldPath    
+    - fromFieldPath: spec.storageGB
+      toFieldPath: spec.forProvider.manifest.spec.storage.size
+      transforms:
+      - string:
+          fmt: '%dGi'
+          type: Format
+        type: string    
+    - fromFieldPath: spec.instances
+      toFieldPath: spec.forProvider.manifest.spec.instances  
+    - fromFieldPath: spec.primaryUpdateStrategy
+      toFieldPath: spec.forProvider.manifest.spec.primaryUpdateStrategy  
+    - fromFieldPath: metadata.name
+      toFieldPath: spec.connectionDetails[0].namespace
+      type: FromCompositeFieldPath 
+    - fromFieldPath: metadata.name
+      toFieldPath: spec.connectionDetails[1].namespace
+      type: FromCompositeFieldPath 
+    - fromFieldPath: metadata.uid
+      toFieldPath: spec.writeConnectionSecretToRef.name
+      transforms:
+      - string:
+          fmt: '%s-cloud-native-pg'
+          type: Format
+        type: string
+      type: FromCompositeFieldPath      
+    - fromFieldPath: metadata.name
+      toFieldPath: spec.forProvider.manifest.metadata.name
+      type: FromCompositeFieldPath  
+    - fromFieldPath: metadata.name
+      toFieldPath: spec.connectionDetails[0].name
+      type: FromCompositeFieldPath   
+      transforms:
+      - string:
+          fmt: '%s-rw'
+          type: Format
+        type: string   
+    - fromFieldPath: metadata.name
+      toFieldPath: spec.connectionDetails[1].name
+      type: FromCompositeFieldPath   
+      transforms:
+      - string:
+          fmt: '%s-superuser'
+          type: Format
+        type: string                                       
+    readinessChecks:
+    - matchCondition:
+        status: "True"
+        type: Ready
+      type: MatchCondition        
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xcloudnativepgs.bindable.db.example.org 
+spec:
+  claimNames:
+    kind: CloudNativePG
+    plural: cloudnativepgs
+  connectionSecretKeys:
+  - type
+  - provider
+  - host
+  - port
+  - username
+  - password
+  - database
+  group: bindable.db.example.org
+  names:
+    kind: XCloudNativePG
+    plural: xcloudnativepgs
+  versions:
+  - name: v1alpha1
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            description: XRD for generating a service bindable CloudNative-PG cluster
+            properties:
+              storageGB:
+                default: 1
+                description: The size of the database in GB
+                type: integer 
+              instances:
+                default: 3
+                description: The number of server instances.  Should be > 1 for failover
+                type: integer  
+              primaryUpdateStrategy:
+                default: unsupervised
+                description: Determines if auto failover will occur (unsupervised mode).  Can be set to unsupervised or supervised
+                type: string                                           
+            type: object
+        type: object    
+    served: true
+    
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: cloudnative-pg
+spec:
+  description:
+    short: Cloud Native Postgres
+  provisioner:
+    crossplane:
+      compositeResourceDefinition: xcloudnativepgs.bindable.db.example.org 
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tanzu-cloud-native-pg-cluster-read-writer
+  labels:
+    services.tanzu.vmware.com/aggregate-to-provider-kubernetes: "true"
+rules:
+- apiGroups:
+  - postgresql.cnpg.io
+  resources:
+  - clusters
+  verbs:
+  - "*"

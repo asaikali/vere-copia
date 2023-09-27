@@ -1,11 +1,11 @@
-CREATE TABLE products
+CREATE TABLE central_products
 (
     sku         INTEGER PRIMARY KEY,
     version     INTEGER DEFAULT 0,
     description TEXT
 );
 
-INSERT INTO products (sku, description)
+INSERT INTO central_products (sku, description)
 VALUES (100, 'base ball'),
        (101, 'baseball glove'),
        (102, 'baseball hat'),

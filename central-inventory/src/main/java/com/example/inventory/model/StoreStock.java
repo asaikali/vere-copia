@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="store_stock")
+@Table(name="central_store_stock")
 public class StoreStock extends VersionedObject {
 
   @EmbeddedId

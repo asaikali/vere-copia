@@ -1,13 +1,13 @@
-CREATE TABLE store_stock
+CREATE TABLE central_store_stock
 (
     store_number INTEGER REFERENCES stores (num),
-    sku          INTEGER REFERENCES products (sku),
+    sku          INTEGER REFERENCES central_products (sku),
     quantity     INTEGER NOT NULL check ( quantity >= 0 ),
     version      INTEGER DEFAULT 0,
     PRIMARY KEY (store_number, sku)
 );
 
-INSERT INTO store_stock(store_number, sku, quantity)
+INSERT INTO central_store_stock(store_number, sku, quantity)
 VALUES -- baseball
        (1, 100, 1),
        (2, 100, 2),

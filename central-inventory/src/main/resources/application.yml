@@ -1,4 +1,3 @@
-
 server:
   port: 8082
 
@@ -9,8 +8,13 @@ spring:
     url: "jdbc:postgresql://127.0.0.1:25432/central_inventory"
     username: postgres
     password: password
+    hikari:
+      connection-timeout: 10000
   jpa:
     open-in-view: false
+  flyway:
+    baseline-on-migrate: true
+    table: central-inventory-schema-version
 
 management:
   wavefront:
@@ -27,3 +31,15 @@ management:
       show-details: always
       probes:
         enabled: true
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+
+server:
+  port: 8080
+
+management:
+  wavefront:
+    uri: proxy://wavefront-proxy:2878

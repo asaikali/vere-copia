@@ -22,3 +22,20 @@ management:
       probes:
         enabled: true
 
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+
+server:
+  port: 8080
+
+management:
+  wavefront:
+    uri: proxy://wavefront-proxy:2878
+
+app:
+  angular: "http://store-kiosk"
+  api: "http://store-operations"
+  wavefront: "http://wavefront-proxy:9411"

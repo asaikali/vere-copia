@@ -11,8 +11,13 @@ spring:
     url: "jdbc:postgresql://127.0.0.1:25432/store_operations"
     username: postgres
     password: password
+    hikari:
+      connection-timeout: 10000
   jpa:
     open-in-view: false
+  flyway:
+    baseline-on-migrate: true
+    table: store-operations-schema-version
 
 management:
   wavefront:
@@ -29,3 +34,17 @@ management:
       show-details: always
       probes:
         enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+
+
+management:
+  wavefront:
+    uri: proxy://wavefront-proxy:2878
+
+central_inventory:
+  url: "http://central-inventory"

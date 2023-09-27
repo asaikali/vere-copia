@@ -14,41 +14,21 @@ following.
 The main branch uses micrometer and zipkin for instrumenting the spring application
 for distributed tracing. The branch `opentracing` uses the opentracing java api instead of zipkin. 
 
-## Setup Wavefront
-* Go to Browse --> Proxies in the wavefront UI  
-* add a proxy and not the token value 
-* add a file called `.env` in the `laptop` diretory with a property `WAVEFRONT_TOKEN=token value from wavefront ui`
-* If necessary, update the docker-compose.yaml file to point to the freemium version of the wavefront API (if you have a freemium API token).
+## Application Deployment
 
-## Steps to run the application: 
+This application contains instructions and configuration to deploy it to multiple platforms.  These include:
 
-* run `./mvnw clean package` to build the application and generate `git.propertis` file in the 
- `central-inventory` application, if the `git.properties` is not generated the application 
- will not startup. 
-* run `docker-compose up` from the `laptop` directory to setup the postgres database and wavefront proxy that the app services use
-* run the central-inventory application
-* run the store-inventory application 
-* run the store-kiosk
-    ```
-    cd ./store-kiosk
-    npm install
-    npm run build
-    npm start
-    ```
-*  go to http://localhost:4200 to access the kiosk
-
-Inspect the store inventory `StoreStockApiController` to learn how to send it requests, it will
-in turn call the central-inventory service. Both central-inventory and store-inventory send data
-to wavefront.
-
-## Run the store gateway (Optional)
-
-An api gateway based on spring cloud gateway  is available in the `store-gateway` project. It will
-proxy traffic to the angular app running with `ng serve`, the store-operations microservice and 
-wavefront proxy. it runs on port 7777 visit `localhost:7777` to access the application via the
-gateway. 
-
-
-
-
-
+- [Local Device](doc/LocalDeviceDeployment.md) - Use this deployment when first learning how the application works.
+- Tanzu Application Service (TAS)
+- Amazon ECS
+- Azure Spring Apps Enterprise (ASA-E)
+- Google Cloud Run 
+- Tanzu App Engine
+- [Tanzu Application Platform (TAP)](doc/TanzuApplicatoinPlatformDeployment)
+- Tanzu TAS adapter
+- Open Shift
+- *Vanilla* Kubernetes
+  - Google Kubernetes Engine (GKE)
+  - Azure Kubernetes Service (AKS)
+  - Elastic Kubernetes Service (EKS)
+  - DYI Kubernetes

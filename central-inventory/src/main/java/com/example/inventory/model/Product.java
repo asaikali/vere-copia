@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "products")
+@Table(name = "central_products")
 public class Product extends VersionedObject{
 
   @Id

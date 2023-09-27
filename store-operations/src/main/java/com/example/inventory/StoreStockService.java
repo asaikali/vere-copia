@@ -52,4 +52,16 @@ class StoreStockService {
             quantity);
     return Arrays.asList(response);
   }
+
+  @Transactional(propagation = Propagation.SUPPORTS)
+  public Integer updateStoreStockLevel(Integer sku, int quantity) {
+
+    return this.storeStockRepository.findById(sku).map(inv -> {
+      inv.setQuantity(quantity);
+      storeStockRepository.save(inv);
+      return quantity;
+    })
+    .orElse(null);
+
+  }  
 }

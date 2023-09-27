@@ -1,20 +1,25 @@
 package com.example.inventory;
 
+import java.util.List;
+import java.util.Random;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.hardship.CpuHardship;
 import com.example.hardship.DatabaseHardship;
 import com.example.hardship.MemoryHardship;
 import com.example.hardship.ThreadHardship;
-import java.util.List;
-import java.util.Random;
-
-import io.micrometer.tracing.Tracer;
-import io.micrometer.tracing.annotation.SpanTag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.tracing.Tracer;
+import io.micrometer.tracing.annotation.SpanTag;
 
 @RestController
 class StoreStockApiController {
@@ -74,6 +79,16 @@ class StoreStockApiController {
       }
     }
     return response;
+  }
+
+  @PostMapping(value="/api/inventory/{sku}", produces = MediaType.APPLICATION_JSON_VALUE)
+  ResponseEntity<Integer> updateStoreStockLevel(@PathVariable("sku") Integer sku, @RequestParam Integer quantity)
+  {
+    final var newStock = this.inventoryService.updateStoreStockLevel(sku, quantity);
+
+    return (newStock != null) ?
+        ResponseEntity.ok().body(newStock) :
+        ResponseEntity.notFound().build();
   }
 
   private void generateHardship(int sku) {
