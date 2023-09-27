@@ -24,7 +24,7 @@ This application contains instructions and configuration to deploy it to multipl
 - Azure Spring Apps Enterprise (ASA-E)
 - Google Cloud Run 
 - Tanzu App Engine
-- [Tanzu Application Platform (TAP)](doc/TanzuApplicatoinPlatformDeployment.md)
+- [Tanzu Application Platform (TAP)](doc/TanzuAppicationPlatformDeployment.md)
 - Tanzu TAS adapter
 - Open Shift
 - *Vanilla* Kubernetes
