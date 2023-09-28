@@ -1,0 +1,7 @@
+spring:
+  banner:
+    location: banner.txt
+
+vere-copia:
+  service:
+    identifier: http://localhost:7777
