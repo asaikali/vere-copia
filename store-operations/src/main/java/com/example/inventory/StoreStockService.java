@@ -53,10 +53,10 @@ class StoreStockService {
     return Arrays.asList(response);
   }
 
-  @Transactional(propagation = Propagation.SUPPORTS)
+  @Transactional(propagation = Propagation.REQUIRED)
   public Integer updateStoreStockLevel(Integer sku, int quantity) {
 
-    return this.storeStockRepository.findById(sku).map(inv -> {
+    return this.storeStockRepository.findWithLockBySku(sku).map(inv -> {
       inv.setQuantity(quantity);
       storeStockRepository.save(inv);
       return quantity;
@@ -64,4 +64,30 @@ class StoreStockService {
     .orElse(null);
 
   }  
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Integer receiveStoreStockInventory(Integer sku, int quantity) {
+
+    return this.storeStockRepository.findWithLockBySku(sku).map(inv -> {
+      inv.setQuantity(quantity + inv.getQuantity());
+      storeStockRepository.save(inv);
+      return inv.getQuantity();
+    })
+    .orElse(null);
+  } 
+
+  @Transactional(propagation = Propagation.REQUIRED)
+  public Integer purchaseStoreStockInventory(Integer sku, int quantity) {
+
+    return this.storeStockRepository.findWithLockBySku(sku).map(inv -> {
+      if((inv.getQuantity() - quantity) < 0)
+        return Integer.valueOf(-1); // -1 Indicates not enough inventory for the purchase
+      
+      inv.setQuantity(inv.getQuantity() - quantity);
+      storeStockRepository.save(inv);
+      return inv.getQuantity();
+    })
+    .orElse(null);
+  } 
+  
 }
