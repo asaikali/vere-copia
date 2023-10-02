@@ -31,7 +31,7 @@ class StoreStockService {
   @Transactional(propagation = Propagation.SUPPORTS)
   public List<ProductSearchResponse> lookupStoreStockLevel(String product) {
    return this.productRepository.findAll().stream()
-        .filter( p -> p.getDescription().contains(product))
+        .filter( p -> p.getDescription().contains(product) ||/* special case for looking up all */ product.compareToIgnoreCase("*") == 0)
         .map(p -> {
           var searchResponse = new ProductSearchResponse();
           searchResponse.setDescription(p.getDescription());

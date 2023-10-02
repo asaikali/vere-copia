@@ -27,39 +27,39 @@ public interface VeraCopiaClient
 	public Flux<ProductSearchResponse> searchR(@RequestParam("product") String product);
 	
 	@GetExchange("/api/stores/stock")
-	public List<ProductStockLevelResponse> searchAllStoreStockLevels(@RequestParam("sku") String sku, @RequestParam("quantity") Integer quantity);	
+	public List<ProductStockLevelResponse> searchAllStoreStockLevels(@RequestParam("sku") Integer sku, @RequestParam("quantity") Integer quantity);	
 	
 	/*
 	 * Reactive version
 	 */
 	@GetExchange("/api/stores/stock")
-	public List<ProductStockLevelResponse> searchAllStoreStockLevelsR(@RequestParam("sku") String sku, @RequestParam("quantity") Integer quantity);	
+	public List<ProductStockLevelResponse> searchAllStoreStockLevelsR(@RequestParam("sku") Integer sku, @RequestParam("quantity") Integer quantity);	
 	
 	@PostExchange("/api/inventory/{sku}")
-	public Integer updateLocalStoreStockLevel(@PathVariable("sku") String sku, @RequestParam("quantity") Integer quantity);	
+	public Integer updateLocalStoreStockLevel(@PathVariable("sku") Integer sku, @RequestParam("quantity") Integer quantity);	
 	
 	/*
 	 * Reactive version
 	 */
 	@PostExchange("/api/inventory/{sku}")
-	public Mono<Integer> updateLocalStoreStockLevelR(@PathVariable("sku") String sku, @RequestParam("quantity") Integer quantity);		
+	public Mono<Integer> updateLocalStoreStockLevelR(@PathVariable("sku") Integer sku, @RequestParam("quantity") Integer quantity);		
 	
 	@PostExchange("/api/inventory/receive/{sku}")
-	public Integer receiveStoreStockInventory(@PathVariable("sku") String sku, @RequestParam("quantity") Integer quantity);	
+	public Integer receiveStoreStockInventory(@PathVariable("sku") Integer sku, @RequestParam("quantity") Integer quantity);	
 	
 	/*
 	 * Reactive version
 	 */
 	@PostExchange("/api/inventory/receive/{sku}")
-	public Mono<Integer> receiveStoreStockInventoryR(@PathVariable("sku") String sku, @RequestParam("quantity") Integer quantity);	
+	public Mono<Integer> receiveStoreStockInventoryR(@PathVariable("sku") Integer sku, @RequestParam("quantity") Integer quantity);	
 	
 	@PostExchange("/api/inventory/purchase/{sku}")
-	public Integer purchaseStoreStockInventory(@PathVariable("sku") String sku, @RequestParam("quantity") Integer quantity);	
+	public Integer purchaseStoreStockInventory(@PathVariable("sku") Integer sku, @RequestParam("quantity") Integer quantity);	
 	
 	/*
 	 * Reactive version
 	 */
 	@PostExchange("/api/inventory/purchase/{sku}")
-	public Mono<Integer> purchaseStoreStockInventoryR(@PathVariable("sku") String sku, @RequestParam("quantity") Integer quantity);	
+	public Mono<Integer> purchaseStoreStockInventoryR(@PathVariable("sku") Integer sku, @RequestParam("quantity") Integer quantity);	
 }
 

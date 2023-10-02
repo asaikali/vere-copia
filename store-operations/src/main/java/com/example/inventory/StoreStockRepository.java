@@ -11,7 +11,7 @@ import jakarta.persistence.LockModeType;
 
 public interface StoreStockRepository extends JpaRepository<StoreStock, Integer> {
 
-	@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	Optional<StoreStock> findWithLockBySku(Integer sku);
 
 }
