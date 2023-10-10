@@ -1,5 +1,6 @@
 package com.example;
 
+
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
 import org.springframework.boot.WebApplicationType;
@@ -21,6 +22,8 @@ public class VereCopiaTesterApplication implements PromptProvider
     @Override
     public AttributedString getPrompt()
     {
+
+
         return new AttributedString("vere-copia:>",
                 AttributedStyle.DEFAULT.foreground(AttributedStyle.BLACK).background(AttributedStyle.BLACK));
     }

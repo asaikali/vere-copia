@@ -105,12 +105,6 @@ spec:
     - port: 80
       containerPort: 8080
       name: http
-  serviceClaims:
-  - name: db
-    ref:
-      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-      kind: ClassClaim
-      name: vera-copia-pg
   resources:
     requests:
       memory: 500M

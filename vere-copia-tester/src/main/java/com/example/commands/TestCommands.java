@@ -11,6 +11,8 @@ import com.example.exchange.VeraCopiaClient;
 import com.example.printers.ProductSearchPrinter;
 import com.example.printers.ProductStockLevelPrinter;
 
+import io.micrometer.core.instrument.MeterRegistry;
+
 
 @ShellComponent
 public class TestCommands 
@@ -21,6 +23,9 @@ public class TestCommands
 	@Autowired
 	protected StoreOpsSim simulator;
 	
+	@Autowired
+	protected MeterRegistry registry;
+
 	protected ProductSearchPrinter productSearchPrinter;
 	
 	protected ProductStockLevelPrinter stockLevelPrinter;
@@ -68,6 +73,15 @@ public class TestCommands
 		try
 		{
 			final var newAmount = client.updateLocalStoreStockLevel(sku, quantity);
+
+			var counter = registry.counter("inventory.instock", "sku", String.valueOf(sku));
+			
+			// reset to 0
+			counter.increment(-counter.count());
+
+			// set to new ammount
+			counter.increment(quantity);
+
 			return String.format("New inventory level for product sku %s: %d", sku, newAmount);
 		}
 		catch (WebClientResponseException.NotFound e)
@@ -84,6 +98,10 @@ public class TestCommands
 		try
 		{
 			final var newAmount = client.receiveStoreStockInventory(sku, quantity);
+
+			registry.counter("inventory.instock", "sku", String.valueOf(sku))
+			.increment(quantity);
+
 			return String.format("New inventory level for product sku %s: %d", sku, newAmount);
 		}
 		catch (WebClientResponseException.NotFound e)
@@ -100,6 +118,10 @@ public class TestCommands
 		try
 		{
 			final var newAmount = client.purchaseStoreStockInventory(sku, quantity);
+
+			registry.counter("inventory.instock", "sku", String.valueOf(sku))
+			.increment(-quantity);
+
 			return String.format("New inventory level for product sku %s: %d", sku, newAmount);
 		}
 		catch (WebClientResponseException.NotFound e)
@@ -113,7 +135,8 @@ public class TestCommands
 	}	
 	
 	@ShellMethod(value = "Run a background simulations of shoppers and backoffice inventory operations", key = "startStoreOpsSimulator")
-	public String startStoreOpsSimulator(@ShellOption(defaultValue = "light", help="Shopper traffic load.  Valid values are 'light', 'medium', and 'heavy'") String trafficLoad)
+	public String startStoreOpsSimulator(@ShellOption(defaultValue = "light", help="Shopper traffic load.  Valid values are 'light', 'medium', and 'heavy'") String trafficLoad,
+	                                     @ShellOption(defaultValue = "false", help="Indicates if simulator should use verbose logging") boolean verbose)
 	{
 		try
 		{
@@ -125,11 +148,13 @@ public class TestCommands
 					return String.format("Simulator is already running with a load of %s", trafficLoad);
 				else
 				{
+					simulator.setVerboseLogging(verbose);
 					simulator.setLoad(load);
 					return String.format("Simulator is already running.  Updating simulator with a load of %s", trafficLoad);
 				}
 			}
 			
+			simulator.setVerboseLogging(verbose);
 			simulator.setLoad(load);
 			simulator.startSimulation();
 			

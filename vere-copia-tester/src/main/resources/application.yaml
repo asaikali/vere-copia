@@ -1,6 +1,26 @@
+server.port: 0
+
 spring:
+  application:
+    name: "vere-copia-tester"
   banner:
     location: banner.txt
+
+management:
+  wavefront:
+    uri: proxy://localhost:2878
+    application:
+      name: vere-copia
+      service-name: vere-copia-tester  
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
 
 vere-copia:
   service:

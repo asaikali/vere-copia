@@ -3,6 +3,7 @@ package com.example.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -16,9 +17,9 @@ public class DeclarativeClientConfig
 	protected String veraCopiaServiceIdentifier;
 	
 	@Bean
-	public VeraCopiaClient getVeraCopiaClient()
+	public VeraCopiaClient getVeraCopiaClient(WebClient.Builder builder, ExchangeFilterFunction filter)
 	{
-		final var client = WebClient.builder().baseUrl(veraCopiaServiceIdentifier).build();
+		final var client = builder.baseUrl(veraCopiaServiceIdentifier).filter(filter).build();
 		final var factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(client)).build();
 
 		return factory.createClient(VeraCopiaClient.class);

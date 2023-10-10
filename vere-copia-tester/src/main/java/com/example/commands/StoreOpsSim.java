@@ -20,6 +20,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import com.example.exchange.VeraCopiaClient;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -58,6 +59,9 @@ public class StoreOpsSim
 	@Autowired
 	protected VeraCopiaClient client;
 	
+	@Autowired
+	protected MeterRegistry registry;
+
 	// Mainly used a mutable Boolean wrapper vs needing the built in concurrent access method
 	protected final AtomicBoolean running;
 	
@@ -73,8 +77,10 @@ public class StoreOpsSim
 	
 	protected final ArrayList<Integer> skus;
 	
+	protected final AtomicBoolean verbose;
+
 	protected final AtomicReference<TrafficLoad> load;
-	
+
 	public StoreOpsSim()
 	{
 		this(TrafficLoad.light);
@@ -84,6 +90,8 @@ public class StoreOpsSim
 	{
 		this.load = new AtomicReference<>(load);
 		
+		verbose = new AtomicBoolean(false);
+
 		running = new AtomicBoolean(false); 
 		inventoryWakeup = new Object();
 		
@@ -123,6 +131,11 @@ public class StoreOpsSim
 		}
 	}
 	
+	public void setVerboseLogging(boolean verbose)
+	{
+		this.verbose.set(verbose);
+	}
+
 	public boolean isRunning()
 	{
 		return running.get();
@@ -180,21 +193,32 @@ public class StoreOpsSim
 			// randomly select quantity to buy
 			final var qauntiy = rn.nextInt(MAX_QUANTITY - MIN_QUANTITY + 1) + MIN_QUANTITY;
 			
-			log.info("Attempting to purchase a quanity of {} items for sku {}", qauntiy, sku);
+			if (verbose.get())
+				log.info("Attempting to purchase a quanity of {} items for sku {}", qauntiy, sku);
 			
 				return client.purchaseStoreStockInventoryR(sku, qauntiy)
-					.doOnSuccess(s -> log.info("Purchase of {} items of sku {} was successful", qauntiy, sku))
+					.doOnSuccess(s -> {
+
+						registry.counter("inventory.instock", "sku", String.valueOf(sku))
+							.increment(-qauntiy);
+
+						if (verbose.get()) 
+							log.info("Purchase of {} items of sku {} was successful", qauntiy, sku);
+					})
 					.onErrorResume(e -> 
 					{	
 						if (e instanceof WebClientResponseException.BadRequest)
 						{
-							log.info("Not enough inventory of sku {} is available.  Requesting more inventory", sku);
+							if (verbose.get())
+								log.info("Not enough inventory of sku {} is available.  Requesting more inventory", sku);
 							
 							// not enough inventory... trigger the inventory sim to replenish with more stock
 							synchronized(inventoryWakeup) { inventoryWakeup.notifyAll();}
 						}
 						else
-							log.info("Failed to successfully purchase sku {}: {}", sku, e.getMessage());
+							if (verbose.get())
+								log.info("Failed to successfully purchase sku {}: {}", sku, e.getMessage());
+						
 						return Mono.empty();
 					})
 					.then(Mono.empty());
@@ -213,16 +237,18 @@ public class StoreOpsSim
 				// initialize skus if not already done
 				try {
 					if (skus.size() == 0)
-						skus.addAll(client.search("*").stream().map(prod -> prod.getSku()).collect(Collectors.toList()));
-					
+						skus.addAll(client.search("*").stream()
+						.map(prod -> prod.getSku())
+						.collect(Collectors.toList()));
 				}
-				catch (Exception e) {log.error("Failed to load product skus: {}", e.getLocalizedMessage(), e);}
+				catch (Exception e) {if (verbose.get()) log.error("Failed to load product skus: {}", e.getLocalizedMessage(), e);}
 				
 				int loadSize = getShopperSizeForLoadSize();
 				
 				final Flux<Integer> shoppers = Flux.fromStream(IntStream.rangeClosed(1, loadSize).boxed()).delayElements(Duration.ofMillis(50));
 				
-				log.info("\r\n---------   Getting ready to shop.  ---------\r\n\r\n");
+				if (verbose.get())
+					log.info("\r\n---------   Getting ready to shop.  ---------\r\n\r\n");
 				
 				shoppers.flatMap(i -> 
 				{
@@ -231,7 +257,8 @@ public class StoreOpsSim
 						return shopTheStore();
 					}
 					catch(Exception e) {
-						log.error("General shopping error: {}", e.getMessage(), e);
+						if (verbose.get())
+							log.error("General shopping error: {}", e.getMessage(), e);
 						return Mono.empty();
 					}
 				})
@@ -258,27 +285,38 @@ public class StoreOpsSim
 			{
 				try
 				{
-					log.info("\r\n---------   Checking if any inventory needs to be restocked. \r\n\r\n");
+					if (verbose.get())
+						log.info("\r\n---------   Checking if any inventory needs to be restocked. \r\n\r\n");
 					
 					// check current stock level
 					client.searchR("*")
 					.filter(prod -> prod.getQuantity() < REORDER_THRESHOLD)
 					.flatMap(prod ->  {
 						
-						log.info("Requesting to restock sku {} with {} more items{}", prod.getSku(), REORDER_AMOUNT);
+						if (verbose.get())
+							log.info("Requesting to restock sku {} with {} more items{}", prod.getSku(), REORDER_AMOUNT);
 						
 						return client.receiveStoreStockInventoryR(prod.getSku(), REORDER_AMOUNT)
-							.doOnSuccess(s -> log.info("Restock of sku {} was successful", prod.getSku()))
+							.doOnSuccess(s -> {
+
+								registry.counter("inventory.instock", "sku", String.valueOf(prod.getSku()))
+									.increment(REORDER_AMOUNT);
+								if (verbose.get()) 
+									log.info("Restock of sku {} was successful", prod.getSku());
+							})
 							.onErrorResume(e -> {
-								log.error("Failed to restock sku {} with {} more items", prod.getSku(), REORDER_AMOUNT);
-								return Mono.empty();
+								if (verbose.get())
+									log.error("Failed to restock sku {} with {} more items", prod.getSku(), REORDER_AMOUNT);
+								
+									return Mono.empty();
 							});
 					})
 					.collectList().block();
 				}
 				catch (Exception e)
 				{
-					log.error("Restock error: {}", e.getLocalizedMessage(), e);
+					if (verbose.get())
+						log.error("Restock error: {}", e.getLocalizedMessage(), e);
 				}
 			}
 			
