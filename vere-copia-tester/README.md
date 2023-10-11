@@ -40,3 +40,37 @@ help
 ```
 
 To get help on an specific command, you simply run `help <command>`.
+
+### Transaction Primitives
+
+The tester includes the following transaction primitives:
+
+- **updateProductInventoryLevel:** Updates the inventory level for a given project sku at the "Local" store.
+- **search:** Perform a store search by a product name.
+- **searchStoreAvailability:** Searches all stores for the availability for a given product sku.
+- **purchaseProductInventory:** Purchase an given amount of a product sku at the "Local" store resulting in a decrease of inventory.
+- **receiveProductInventory:** Receives new inventory resulting in additive an inventory level for a given project sku at the "Local" store.
+
+### Simulations
+
+The test includes the following simulation commands:
+
+- **startStoreOpsSimulator:** Run a background simulations of shoppers and back office inventory operations
+- **stopStoreOpsSimulator:** Stops a running background simulations of shoppers and back office inventory operations
+
+Simulations can be run at different load levels of `light`, `medium`, and `heavy`.  In addition, you can set a `verbose` flag to true to output 
+transaction logging in real time (by default, the simulation runs silently in the background).
+
+### Statistics Commands
+
+The testing application keeps track of what it thinks the store inventory should be using counter metrics (these are published to Wavefront)
+per product sku.  It also keeps track a count of successful transactions per `request target`.  A `request target` is simply the logical node name
+where the `store-operation` service is running.  For example, in kubernetes, the `request target` is the pod name.  
+
+At any time, you can view or export the current statistic counts of the application using the following commands:
+
+- **exportStats:** Exports captured stats to a local JSON file
+- **getActualInventory:** Displays actual inventory count stored in the database.  This can be compared against the Counted Inventory to determine database consistency.
+- **getCountedInventory:** Displays the expected inventory count in the local store based on purchases and restocks made in this test app
+- **printStats:** Prints captured stats in raw JSON format
+
