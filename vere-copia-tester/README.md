@@ -74,3 +74,22 @@ At any time, you can view or export the current statistic counts of the applicat
 - **getCountedInventory:** Displays the expected inventory count in the local store based on purchases and restocks made in this test app
 - **printStats:** Prints captured stats in raw JSON format
 
+## Metrics
+
+The testing application uses micrometer constructs for local reporting of application statistics as well as publishing to Wavefront for deeper analysis.
+
+### Inventory Count
+
+A counter is used to keep track of what the testing application thinks should be the inventory level of each SKU in the system.  Upon a successful
+transaction with `store-operator` service, the tester will update the counter with the new inventory level.  
+
+When viewing application statistics, the tester can output the value of its counters along with the actual inventory levels stored in the database (the database
+inventory levels are retrieved by calling the `store-operator` service).  The intention of the two separate sources of inventory levels is for comparison to facilitate
+data consistency checking.  The value of the counters should always match the database count levels to assert proper data consistency.
+
+###  Request Targets
+
+A counter is used to keep track of successful requests to one or more `request targets`.  To implement this feature, the `store-operator` service returns a customer HTTP header
+with the name of the service's node name.  The node name is used as tag in counter to delineate between request targets.
+ 
+
